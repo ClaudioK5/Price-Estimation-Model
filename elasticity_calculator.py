@@ -14,12 +14,7 @@ def elasticity_calculator(product_name):
 
     df = pd.read_sql(query, engine, params={"product_name": product_name})
 
-    print(df)
-
     df_item = (df.groupby(['product_name', 'price']).agg(total_amount_sold=('amount', 'sum')).reset_index())
-
-    print(df_item)
-
 
     df_item['log_price'] = np.log(df_item['price'])
 
@@ -32,5 +27,6 @@ def elasticity_calculator(product_name):
     model = sm.OLS(y, X).fit()
 
     elasticity = model.params['log_price']
+
 
     return elasticity
